@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>سعر  عمله ماجيكس اليوم</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="stockChart"></canvas>
+
+  <script>
+    // مصفوفة البيانات
+    var data = {
+      labels: [],
+      datasets: [{
+        label: 'سعر العملة',
+        data: [],
+        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+        borderColor: 'rgba(0, 123, 255, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    // تحديث بيانات المخطط كل 100 ثانية
+    setInterval(function() {
+      var currentPrice = data.datasets[0].data.length > 0 ? data.datasets[0].data[data.datasets[0].data.length - 1] : 500000;
+      var fluctuation = Math.random() < 0.5 ? -1 : 1; // اختيار عشوائي للارتفاع أو الانخفاض
+      var newPrice = currentPrice + (Math.random() * 10000) * fluctuation; // توليد سعر عشوائي بناءً على التذبذب
+      data.labels.push(new Date().toLocaleTimeString());
+      data.datasets[0].data.push(newPrice);
+
+      // قم بتحديث المخطط
+      stockChart.update();
+    }, 100000);
+
+    // قم برسم البيانات على شكل مخطط
+    var ctx = document.getElementById('stockChart').getContext('2d');
+    var stockChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {}
+    });
+  </script>
+</body>
+</html>
